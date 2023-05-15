@@ -28,17 +28,17 @@ fetch("http://localhost:3000/api/products")
         const img = document.createElement("img");
         article.appendChild(img);
         img.src = product.imageUrl;
-        img.alt = '${value.altTxt}';
+        img.alt = product.altTxt;
         
         let productName = document.createElement("h3");
         article.appendChild(productName);
         productName.classList.add("productName");
-        productName.innerText = '${product.name}';
+        productName.innerText = product.name;
 
         let productDescription = document.createElement("p");
         article.appendChild(productDescription);
         productDescription.classList.add("productDescription");
-        productDescription.innerText = '${product.description}';
+        productDescription.innerText = product.description;
 
         // structure article créé
         console.log("7 - structure article créée");

@@ -1,6 +1,4 @@
-console.log("1 - Bonjour dans le P5 - Essai affichage de données ! ");
-
-console.log("2 - avant id fetch - envoi requête HTTP avec la méthode GET pour récupérer les données enregistrées sur ce lien");
+console.log("1 - avant id fetch - envoi requête HTTP avec la méthode GET pour récupérer les données enregistrées sur ce lien");
 // envoi d'un requête HTTP avec la méthode GET pour récupérer des données enregistrées à ce lien
 
 function readArticle() { 
@@ -8,14 +6,14 @@ fetch("http://localhost:3000/api/products")
 //récupérer le résultat de la requête au format json
 .then(function(resultat) {
     if (resultat.ok) {
-        console.log("3 - résultat ok");
+        console.log("3 - stockage données dans fichier json value ");
         return resultat.json();
     }
 })
 .then(function(value) {
     // traitement des données récupérées en json pour les afficher dans les bons champs
     // recuperation du resultat, en utilisant la boucle for of et en chargeant les éléments
-    console.log("4 - value" , value);
+    console.log("4 - lecture données dans value pour affichage écran", value);
 
     for(let product of value) {
   
@@ -27,10 +25,10 @@ fetch("http://localhost:3000/api/products")
         let article = document.createElement("article");
         a.appendChild(article);
 
-        let img = document.createElement("img");
+        const img = document.createElement("img");
         article.appendChild(img);
-        img.src = '${product.imageUrl}';
-        img.alt = '${altTxt}';
+        img.src = product.imageUrl;
+        img.alt = '${value.altTxt}';
         
         let productName = document.createElement("h3");
         article.appendChild(productName);
@@ -55,7 +53,7 @@ fetch("http://localhost:3000/api/products")
 // appel de la fonction créée
 readArticle();
 
-console.log("6 - après Read Article");
+console.log("6 - FIN - Après appel fonction");
 
 
 

@@ -1,11 +1,13 @@
 console.log("1 - Bonjour dans le P5 - Essai affichage de données ! ");
 
-let art =document.getElementById('items');
-art.innerHTML = "<a><article><img><h3>nom de l'article</h3><p>Description de l'article</p></article></a>";
+// let art =document.getElementById('items');
+// art.innerHTML = "<a><article><img><h3>nom de l'article</h3><p>Description de l'article</p></article></a>";
 
+console.log("2 - avant id fetch - envoi requête HTTP avec la méthode GET pour récupérer les données enregistrées sur ce lien");
 // envoi d'un requête HTTP avec la méthode GET pour récupérer des données enregistrées à ce lien
-console.log("2 - avant id fetch");
-fetch("http://localhost:3000/api/products/107fb5b75607497b96722bda5b504926")
+
+function readArticle() { 
+fetch("http://localhost:3000/api/products")
 //récupérer le résultat de la requête au format json
 .then(function(resultat) {
     if (resultat.ok) {
@@ -14,32 +16,40 @@ fetch("http://localhost:3000/api/products/107fb5b75607497b96722bda5b504926")
     }
 })
 .then(function(value) {
-    // recuperation du resultat
-    console.log("4 - recuperation donnees");
+    // traitement des données récupérées en json pour les afficher dans les bons champs
+    // recuperation du resultat, en utilisant la boucle for of et en chargeant les éléments
+    console.log("4 - value" , value);
 
 })
 .catch(function(error) {
     //une erreur est survenue
     console.log("5 - une erreur est survenue");
 })
+}
+// appel de la fonction créée
+readArticle();
 
-console.log("6 - après fetch");
+console.log("6 - après Read Article");
 
-// création d'un nouvel élément de type article , ajouté dans l'élément ayant pour id "items"
+// création d'un nouvel élément de type <a> ajouté dans l'élément ayant pour id "items"
+let a = document.createElement("a");
+document.getElementById("items").appendChild(a);
+
+// création d'un nouvel élément de type article , ajouté dans l'élément <a>"
 let article = document.createElement("article");
-document.getElementById("items").appendChild(article);
+a.appendChild(article);
 
 let img = document.createElement("img");
-// img.src = article.img;
+img.src = article.img;
 img.src = "http://localhost:3000/images/kanap01.jpeg";
 img.alt = "Photo d'un canapé bleu, deux places";
 article.appendChild(img);
 let productName = document.createElement("h3");
-// productName.innerText = article.productName;
+productName.innerText = article.productName;
 productName.classList.add("productName");
 article.appendChild(productName);
 let productDescription = document.createElement("p");
-// productDescription.innerText = article.productDescription;
+productDescription.innerText = article.productDescription;
 productDescription.classList.add("productDescription");
 article.appendChild(productDescription);
 

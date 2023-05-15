@@ -1,43 +1,59 @@
-console.log("Bonjour dans le P5 - Essai affichage de données ! ");
-
- let art =document.getElementById('items');
- art.innerHTML = "<a><article><img><h3>productName</h3><p>productDescription</p></article></a>";
-
-// création d'un nouvel élément de type article , ajouté dans l'élément ayant pour id "items"
-let article = document.createElement("article");
-document.getElementById("items").appendChild(article);
-
-let img = document.createElement("img");
-img.src = article.img;
-let productName = document.createElement("h3");
-productName.innerText = article.productName;
-productName.classList.add("productName");
-let productDescription = document.createElement("p");
-productDescription.innerText = article.productDescription;
-productDescription.classList.add("productDescription")
-
+console.log("1 - avant id fetch - envoi requête HTTP avec la méthode GET pour récupérer les données enregistrées sur ce lien");
 // envoi d'un requête HTTP avec la méthode GET pour récupérer des données enregistrées à ce lien
-function readProduct() {
-    fetch("http://localhost:3000/api/products/107fb5b75607497b96722bda5b504926")
 
-    //récupérer le résultat de la requête au format json
-    console.log("id fetch")
-    .then(function(res) {
-        //vérifier que la requête s’est bien passée
-        if (res.ok) {
-            console.log("if res");
-            return res.json();
-            }
-    })
-    .then(function(value) {
-        // 
+function readArticle() { 
+fetch("http://localhost:3000/api/products")
+//récupérer le résultat de la requête au format json
+.then(function(resultat) {
+    if (resultat.ok) {
+        console.log("3 - stockage données dans fichier json value ");
+        return resultat.json();
+    }
+})
+.then(function(value) {
+    // traitement des données récupérées en json pour les afficher dans les bons champs
+    // recuperation du resultat, en utilisant la boucle for of et en chargeant les éléments
+    console.log("4 - lecture données dans value pour affichage écran", value);
 
-    })
-    .catch(function(err) {
-        //une erreur est survenue
-        console.log("une erreur est survenue");
-    })
+    for(let product of value) {
+  
+        // création d'un nouvel élément de type <a> ajouté dans l'élément ayant pour id "items"
+        let a = document.createElement("a");
+        document.getElementById("items").appendChild(a);
+
+        // création d'un nouvel élément de type article , ajouté dans l'élément <a>"
+        let article = document.createElement("article");
+        a.appendChild(article);
+
+        const img = document.createElement("img");
+        article.appendChild(img);
+        img.src = product.imageUrl;
+        img.alt = product.altTxt;
+        
+        let productName = document.createElement("h3");
+        article.appendChild(productName);
+        productName.classList.add("productName");
+        productName.innerText = product.name;
+
+        let productDescription = document.createElement("p");
+        article.appendChild(productDescription);
+        productDescription.classList.add("productDescription");
+        productDescription.innerText = product.description;
+
+        // structure article créé
+        console.log("7 - structure article créée");
+    }
+
+})
+.catch(function(error) {
+    //une erreur est survenue
+    console.log("5 - une erreur est survenue");
+})
 }
-console.log("après fetch");
+// appel de la fonction créée
+readArticle();
+
+console.log("6 - FIN - Après appel fonction");
+
 
 

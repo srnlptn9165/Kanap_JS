@@ -1,8 +1,5 @@
 console.log("1 - Bonjour dans le P5 - Essai affichage de données ! ");
 
-// let art =document.getElementById('items');
-// art.innerHTML = "<a><article><img><h3>nom de l'article</h3><p>Description de l'article</p></article></a>";
-
 console.log("2 - avant id fetch - envoi requête HTTP avec la méthode GET pour récupérer les données enregistrées sur ce lien");
 // envoi d'un requête HTTP avec la méthode GET pour récupérer des données enregistrées à ce lien
 
@@ -20,6 +17,35 @@ fetch("http://localhost:3000/api/products")
     // recuperation du resultat, en utilisant la boucle for of et en chargeant les éléments
     console.log("4 - value" , value);
 
+    for(let product of value) {
+  
+        // création d'un nouvel élément de type <a> ajouté dans l'élément ayant pour id "items"
+        let a = document.createElement("a");
+        document.getElementById("items").appendChild(a);
+
+        // création d'un nouvel élément de type article , ajouté dans l'élément <a>"
+        let article = document.createElement("article");
+        a.appendChild(article);
+
+        let img = document.createElement("img");
+        article.appendChild(img);
+        img.src = '${product.imageUrl}';
+        img.alt = '${altTxt}';
+        
+        let productName = document.createElement("h3");
+        article.appendChild(productName);
+        productName.classList.add("productName");
+        productName.innerText = '${product.name}';
+
+        let productDescription = document.createElement("p");
+        article.appendChild(productDescription);
+        productDescription.classList.add("productDescription");
+        productDescription.innerText = '${product.description}';
+
+        // structure article créé
+        console.log("7 - structure article créée");
+    }
+
 })
 .catch(function(error) {
     //une erreur est survenue
@@ -31,27 +57,5 @@ readArticle();
 
 console.log("6 - après Read Article");
 
-// création d'un nouvel élément de type <a> ajouté dans l'élément ayant pour id "items"
-let a = document.createElement("a");
-document.getElementById("items").appendChild(a);
 
-// création d'un nouvel élément de type article , ajouté dans l'élément <a>"
-let article = document.createElement("article");
-a.appendChild(article);
 
-let img = document.createElement("img");
-img.src = article.img;
-img.src = "http://localhost:3000/images/kanap01.jpeg";
-img.alt = "Photo d'un canapé bleu, deux places";
-article.appendChild(img);
-let productName = document.createElement("h3");
-productName.innerText = article.productName;
-productName.classList.add("productName");
-article.appendChild(productName);
-let productDescription = document.createElement("p");
-productDescription.innerText = article.productDescription;
-productDescription.classList.add("productDescription");
-article.appendChild(productDescription);
-
-// structure article créé
-console.log("7 - structure article créée");

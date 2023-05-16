@@ -13,7 +13,7 @@ fetch("http://localhost:3000/api/products")
 .then(function(value) {
     // traitement des données récupérées en json pour les afficher dans les bons champs
     // recuperation du resultat, en utilisant la boucle for of et en chargeant les éléments
-    console.log("4 - lecture données dans value pour affichage écran", value);
+    console.table(value);
 
     for(let product of value) {
   
@@ -39,9 +39,20 @@ fetch("http://localhost:3000/api/products")
         article.appendChild(productDescription);
         productDescription.classList.add("productDescription");
         productDescription.innerText = product.description;
+        
+        let product_id = document.createElement("p");
+        product_id.innerText = product._id;
 
-        // structure article créé
-        console.log("7 - structure article créée");
+        let productPrice = document.createElement("p");
+        productPrice.innerText = product.price;
+
+        let productColors = document.createElement("table");
+        productColors.innerText = product.colors;
+
+        // données articles affichées et/ou récupérées pour la page produit
+        console.log("7 - données articles affichées et/ou récupérées pour la page produit");
+        console.log(product.name, product._id, product.price, product.colors )
+        
     }
 
 })

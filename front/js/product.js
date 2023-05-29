@@ -15,7 +15,6 @@ function fillHTML(){
     
         .then((product) => {
             console.log("product :");
-            console.log("product._id dans fetch: ", product._id);
             console.table(product);
             /* -----------------------------------------------------------
                --- Remplissage de la div Image avec class="item__img"  ---
@@ -71,7 +70,7 @@ fillHTML();
 
 function saveCart(cart){
     localStorage.setItem("cart",JSON.stringify(cart));
-    console.log("1/ fonction de création du panier dans le local storage");
+    console.log("1/ fonction d'enregistrement du panier dans le local storage");
 }
 // fonction permettant de récupérer le panier avec JSON.parse qui permet de transformer la chaîne de caractère en tableau
 function getCart(){
@@ -92,7 +91,7 @@ function addToTheCart(product){
     // récupération du panier présent dans le localStorage
     console.log("3/ fonction d ajout : ")
     let cart = getCart();
-    console.log("récupération du panier => ")
+    console.log("4/ récupération du panier => ")
     // recherche du produit existant, pour gérer la quantité plutôt que de dupliquer le produit
     let productId = new URL(location.href).searchParams.get("id");
     fetch("http://localhost:3000/api/products/" + productId)
@@ -109,8 +108,8 @@ function addToTheCart(product){
                 if(foundProduct != undefined){
                 foundProduct.quantity++;
             }else{
-                console.log("product._id dans else : ", product._id, ", --- qte : ", quantity);
-                product.quantity=1;
+                console.log("product._id dans else : ", product._id, ", --- qte : ", quantity.value);
+                product.quantity=quantity.value;
                 cart.push(product); // ajout (push) du produit dans le tableau (panier)
             }
         

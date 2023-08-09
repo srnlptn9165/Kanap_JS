@@ -8,14 +8,10 @@ let total = 0;
 function getCart() {
   // console.log(cart);
 
-  let sortedCart = cart.sort((a, b) =>
-    parseInt(a._id) > parseInt(b._id)
-      ? 1
-      : parseInt(a._id) > parseInt(b._id)
-      ? -1
-      : 0
-  );
-  console.log(sortedCart);
+  // let sortedCart = cart.sort((a, b) =>
+  //   a._id > b._id ? 1 : a._id > b._id ? -1 : 0
+  // );
+  // console.log(sortedCart);
 
   // item du localStorage
   for (let item of cart) {
@@ -36,15 +32,13 @@ function getCart() {
         document.getElementById("cart__items").appendChild(article);
         article.classList.add("cart__item");
         // ajouter data-id="{product-ID}" data-color="{product-color}"
+        article.dataset.id = item._id;
+        article.dataset.color = item.color;
 
         // <div class="cart__item__img">
         let cartItemImg = document.createElement("div");
         article.appendChild(cartItemImg);
         cartItemImg.classList.add("cart__item__img");
-        article.dataId = "${item._id}";
-        article.dataColor = "${item.color}";
-        // console.log(`$item._id : ${item._id}`);
-        // console.log(`$item.color : ${item.color}`);
 
         let img = document.createElement("img");
         img.src = product.imageUrl;
@@ -122,25 +116,67 @@ function getCart() {
         // <p class="deleteItem">Supprimer</p>
         let deleteItem = document.createElement("p");
         cartItemContentSettingsDelete.appendChild(deleteItem);
+        deleteItem.classList.add("deleteItem");
         deleteItem.innerText = "Supprimer";
+
+        addEventListenerOnDeleteBtn();
       });
   }
 }
 
-getCart();
+function handleDelete(e) {
+  let btnSuppr = e.target;
+  let articleEl = btnSuppr.closest(".cart__item");
+
+  // suppression dans le DOM de l'article consulté
+  articleEl.remove();
+  // suppression dans le localStorage de l'aticle consulté à partir de son index dans le tableau
+  // console.log(cart);
+  // console.log(articleEl.dataset.id);
+  // console.log(articleEl.dataset.color);
+
+  for (let i = 0, cartLength = cart.length; i < cartLength; i++)
+    if (
+      cart[i]._id === articleEl.dataset.id &&
+      cart[i].color === articleEl.dataset.color
+    ) {
+      // déclaration de variable utile pour la suppression : index de l'objet à supprimer
+      const indexDelete = [i];
+      // création d'un tableau miroir
+      let newCart = JSON.parse(localStorage.getItem("cart"));
+      //suppression de 1 élément à l'indice num
+      newCart.splice(indexDelete, 1);
+      // console.log(newCart);
+      localStorage.setItem("cart", JSON.stringify(newCart));
+      return location.reload();
+    }
+  e.stopPropagation();
+}
+
+function addEventListenerOnDeleteBtn() {
+  let btnSupprArray = document.querySelectorAll(".deleteItem");
+
+  btnSupprArray.forEach((btn) => {
+    btn.addEventListener("click", handleDelete, false);
+  });
+}
+
+// window.addEventListener("DOMContentLoaded", ()=>console.log("2. AddEventListenerOnDeleteBtn"));
+
+// trier le panier => ne fonctionne pas
 
 // supprimer un produit
-function removeFromCart(product) {
-  // sur click sur class cart__item__content__settings__delete
-  // récupération de l'identifiant et de la couleur affichée
 
-  // récupération des informations présentes
-  let cart = getCart();
-  console.log("remove : " + cart);
-  cart = cart.filter((p) => (p.id != product.id) & (p.color != product.color));
-  saveCart(cart);
-}
-// Suppression d'un produit
+// modifier le DOM et le localStorage
+// avant de remove, récupérer l'id pour le supprimer du local storage
+
+// pour la modif récupérer la nouvelle qté dans le e.target
+
+getCart();
+
+//   cart = cart.filter((p) => (p.id != product.id) & (p.color != product.color));
+//   saveCart(cart);
+// }
 
 // // modifier une quantité
 // function changeQuantity(product, quantity) {
@@ -290,6 +326,7 @@ inputs.forEach((input) => {
     }
   });
 });
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   if (firstName && lastName && address && city && email) {
